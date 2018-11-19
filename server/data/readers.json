@@ -1,0 +1,14 @@
+[
+    {
+        "readerID": 1,
+        "name": "Todd",
+        "weeklyReadingGoal": "23",
+        "totalMinutesRead": "434"
+    },
+    {
+        "readerID": 2,
+        "name": "Sol",
+        "weeklyReadingGoal": "345",
+        "totalMinutesRead": "434"
+    }
+]
