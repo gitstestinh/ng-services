@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 export class LogResponseInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log(`Log response interceptor ran - ${req.url}`);
+        // console.log(`Log response interceptor ran - ${req.url}`);
         return next.handle(req)
         .pipe(
             tap(response => {
