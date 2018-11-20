@@ -281,7 +281,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_5__add_reader_add_reader_component__["a" /* AddReaderComponent */]
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["b" /* HttpClientModule */],
+                __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["c" /* HttpClientModule */],
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_7__app_routing_module__["a" /* AppRoutingModule */],
                 __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
@@ -291,6 +291,39 @@ var AppModule = (function () {
         })
     ], AppModule);
     return AppModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/core/add-header.interceptor.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddHeaderInterceptor; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var AddHeaderInterceptor = (function () {
+    function AddHeaderInterceptor() {
+    }
+    AddHeaderInterceptor.prototype.intercept = function (req, next) {
+        console.log("Add Header interceptor ran - " + req.url);
+        var request = req.clone({
+            setHeaders: { 'Content-Type': 'application/json' }
+        });
+        return next.handle(request);
+    };
+    AddHeaderInterceptor = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])()
+    ], AddHeaderInterceptor);
+    return AddHeaderInterceptor;
 }());
 
 
@@ -348,6 +381,9 @@ var BookTrackerErrorHandlerService = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_core_module_import_guard__ = __webpack_require__("../../../../../src/app/core/module-import-guard.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__book_tracker_error_handler_service__ = __webpack_require__("../../../../../src/app/core/book-tracker-error-handler.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_app_dashboard_books_resolver__ = __webpack_require__("../../../../../src/app/dashboard/books.resolver.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__add_header_interceptor__ = __webpack_require__("../../../../../src/app/core/add-header.interceptor.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__log_response_interceptor__ = __webpack_require__("../../../../../src/app/core/log-response.interceptor.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -360,6 +396,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+
+
+
 
 
 
@@ -381,7 +420,9 @@ var CoreModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_2__logger_service__["a" /* LoggerService */],
                 __WEBPACK_IMPORTED_MODULE_3__data_service__["a" /* DataService */],
                 __WEBPACK_IMPORTED_MODULE_6_app_dashboard_books_resolver__["a" /* BooksResolver */],
-                { provide: __WEBPACK_IMPORTED_MODULE_0__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_5__book_tracker_error_handler_service__["a" /* BookTrackerErrorHandlerService */] }
+                { provide: __WEBPACK_IMPORTED_MODULE_0__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_5__book_tracker_error_handler_service__["a" /* BookTrackerErrorHandlerService */] },
+                { provide: __WEBPACK_IMPORTED_MODULE_7__angular_common_http__["a" /* HTTP_INTERCEPTORS */], useClass: __WEBPACK_IMPORTED_MODULE_8__add_header_interceptor__["a" /* AddHeaderInterceptor */], multi: true },
+                { provide: __WEBPACK_IMPORTED_MODULE_7__angular_common_http__["a" /* HTTP_INTERCEPTORS */], useClass: __WEBPACK_IMPORTED_MODULE_9__log_response_interceptor__["a" /* LogResponseInterceptor */], multi: true }
             ]
         }),
         __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["O" /* Optional */])()), __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_2" /* SkipSelf */])()),
@@ -433,21 +474,21 @@ var DataService = (function () {
     };
     DataService.prototype.getAllReaders = function () {
         var _this = this;
-        return this.http.get('/api/readers', { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+        return this.http.get('/api/readers', { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
                 'Accept': 'application/json',
                 'Authorization': 'my-token'
             }) })
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_6_rxjs_operators__["a" /* catchError */])(function (err) { return _this.handleHttpError(err); }));
     };
     DataService.prototype.getReaderById = function (id) {
-        return this.http.get("/api/readers/" + id, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+        return this.http.get("/api/readers/" + id, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
                 'Accept': 'application/json',
                 'Authorization': 'my-token'
             }) });
     };
     DataService.prototype.addReader = function (reader) {
         var _this = this;
-        return this.http.post("/api/readers", reader, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+        return this.http.post("/api/readers", reader, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
                 'Content-Type': 'application/json',
                 'Authorization': 'my-token'
             }) })
@@ -455,7 +496,7 @@ var DataService = (function () {
     };
     DataService.prototype.updateReader = function (reader) {
         var _this = this;
-        return this.http.put("/api/readers/" + reader.readerID, reader, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+        return this.http.put("/api/readers/" + reader.readerID, reader, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
                 'Content-Type': 'application/json',
                 'Authorization': 'my-token'
             }) })
@@ -463,7 +504,7 @@ var DataService = (function () {
     };
     DataService.prototype.deleteReader = function (readerId) {
         var _this = this;
-        return this.http.delete("/api/readers/" + readerId, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+        return this.http.delete("/api/readers/" + readerId, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
                 'Content-Type': 'application/json',
                 'Authorization': 'my-token'
             }) })
@@ -477,7 +518,7 @@ var DataService = (function () {
     ;
     DataService.prototype.getBookById = function (id) {
         var _this = this;
-        return this.http.get("/api/books/" + id, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+        return this.http.get("/api/books/" + id, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
                 'Accept': 'application/json',
                 'Authorization': 'my-token'
             }) })
@@ -485,7 +526,7 @@ var DataService = (function () {
     };
     DataService.prototype.getOldBookById = function (id) {
         var _this = this;
-        return this.http.get("/api/books/" + id, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+        return this.http.get("/api/books/" + id, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
                 'Accept': 'application/json',
                 'Authorization': 'my-token'
             }) })
@@ -496,7 +537,7 @@ var DataService = (function () {
     };
     DataService.prototype.addBook = function (book) {
         var _this = this;
-        return this.http.post('/api/books', book, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+        return this.http.post('/api/books', book, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
                 'Content-Type': 'application/json',
                 'Authorization': 'my-token'
             }) })
@@ -504,7 +545,7 @@ var DataService = (function () {
     };
     DataService.prototype.updateBook = function (book) {
         var _this = this;
-        return this.http.put("/api/books/" + book.bookID, book, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+        return this.http.put("/api/books/" + book.bookID, book, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
                 'Content-Type': 'application/json',
                 'Authorization': 'my-token'
             }) })
@@ -512,7 +553,7 @@ var DataService = (function () {
     };
     DataService.prototype.deleteBook = function (bookId) {
         var _this = this;
-        return this.http.delete("/api/books/" + bookId, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]({
+        return this.http.delete("/api/books/" + bookId, { headers: new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpHeaders */]({
                 'Content-Type': 'application/json',
                 'Authorization': 'my-token'
             }) })
@@ -527,9 +568,48 @@ var DataService = (function () {
     };
     DataService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__logger_service__["a" /* LoggerService */], __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__logger_service__["a" /* LoggerService */], __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */]])
     ], DataService);
     return DataService;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/core/log-response.interceptor.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LogResponseInterceptor; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__("../../../../rxjs/_esm5/operators/index.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+var LogResponseInterceptor = (function () {
+    function LogResponseInterceptor() {
+    }
+    LogResponseInterceptor.prototype.intercept = function (req, next) {
+        console.log("Log response interceptor ran - " + req.url);
+        return next.handle(req)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["c" /* tap */])(function (response) {
+            if (response.type === __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpEventType */].Response) {
+                console.log(response.body);
+            }
+        }));
+    };
+    LogResponseInterceptor = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])()
+    ], LogResponseInterceptor);
+    return LogResponseInterceptor;
 }());
 
 
